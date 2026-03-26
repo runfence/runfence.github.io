@@ -5,25 +5,35 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       name="description"
-      content="Protect crypto wallets, browser profiles, and tools like Claude Code with Windows-enforced account boundaries. RunFence isolates Windows apps by running them under isolated accounts. Passwords are stored in a secure vault for one click app launch."
+      content="Isolate Windows apps in dedicated local accounts to protect wallets, browser profiles, and Claude Code with encrypted credentials and one-click launch."
     />
-    <meta
-      name="keywords"
-      content="App Container, Windows app isolation, sandbox, local Windows accounts, Claude Code isolation, dangerously-skip-permissions, crypto wallet protection, per-app firewall, Windows 10, Windows 11, elevated, open source, free"
-    />
-    <meta name="theme-color" content="#f6f9ff" />
     <meta name="robots" content="index,follow" />
 
-    <title>RunFence — Windows app isolation without VMs</title>
+    <link rel="canonical" href="https://runfence.net/" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
 
-    <meta property="og:title" content="RunFence — Windows app isolation without VMs" />
+    <title>RunFence — Windows App Isolation for Wallets, Browsers, Claude Code</title>
+
+    <meta property="og:title" content="RunFence — Windows App Isolation for Wallets, Browsers, Claude Code" />
     <meta
       property="og:description"
       content="Run each Windows app under its own dedicated local account — without VMs, without password prompts, and without leaving your desktop."
     />
-    <meta property="og:image" content="https://raw.githubusercontent.com/runfence/RunFence/master/docs/demo.gif" />
+    <meta property="og:url" content="https://runfence.net/" />
+    <meta property="og:image" content="demo.gif" />
+    <meta property="og:image:width" content="1165" />
+    <meta property="og:image:height" content="667" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RunFence" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RunFence — Windows App Isolation for Wallets, Browsers, Claude Code" />
+    <meta
+      name="twitter:description"
+      content="Run each Windows app under its own dedicated local account — without VMs, without password prompts, and without leaving your desktop."
+    />
+    <meta name="twitter:image" content="demo.gif" />
 
     <script type="application/ld+json">
       {
@@ -31,15 +41,50 @@
         "@type": "SoftwareApplication",
         "name": "RunFence",
         "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "Windows app isolation",
         "operatingSystem": "Windows 10+",
-        "description": "RunFence isolates Windows apps by running each one under its own local account.",
-        "url": "https://github.com/runfence/RunFence",
-        "image": "https://raw.githubusercontent.com/runfence/RunFence/master/docs/demo.gif",
+        "description": "RunFence isolates Windows apps by launching each one under its own local account.",
+        "url": "https://runfence.net/",
+        "image": "demo.gif",
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "USD",
+          "description": "Free for non-commercial evaluation use, no time limit."
         }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I share files between my main account and an isolated one?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use a shared folder with explicit permissions or the built-in cross-user drag-and-drop bridge for ad-hoc transfers."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can an isolated app read my personal files?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Standard Windows user folders — Documents, Downloads, Desktop, AppData, and similar — are inaccessible to other accounts by default. For paths outside those defaults, use the Account ACL Manager to add explicit rules."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does RunFence work with games?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It depends on the launcher and anti-cheat system. Some launchers need elevation to install games, and the game itself then runs under the isolated account. Steam is the only major launcher that can itself be installed without elevation."
+            }
+          }
+        ]
       }
     </script>
 
@@ -395,6 +440,7 @@
       .icon {
         width: 46px;
         height: 46px;
+        flex: 0 0 46px;
         display: grid;
         place-items: center;
         border-radius: 16px;
@@ -448,6 +494,48 @@
         margin-bottom: 12px;
         font-weight: 800;
         color: #234b9b;
+      }
+
+      details.foldout {
+        padding: 0;
+        overflow: hidden;
+      }
+
+      details.foldout summary {
+        list-style: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      details.foldout summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .summary-meta {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted2);
+      }
+
+      .foldout-body {
+        padding: 0 20px 20px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .foldout-body p {
+        margin: 0 0 12px;
+      }
+
+      .foldout-body ul {
+        margin: 0;
+        padding-left: 20px;
       }
 
       .comparison {
@@ -604,6 +692,8 @@
           margin-left: -18px;
         }
         .comparison th, .comparison td { padding: 13px 10px; }
+        details.foldout summary { padding: 18px; }
+        .foldout-body { padding: 0 18px 18px; }
       }
     </style>
   </head>
@@ -644,8 +734,8 @@
               <h1>Run each app in its own account.</h1>
 
               <p class="subhead">
-                RunFence isolates Windows apps by launching each one under a dedicated local account, so personal files,
-                browser data, credentials, and secrets stay separated from the rest of the desktop.
+                RunFence is a Windows app isolation tool that launches each app under a dedicated local account, so
+                browser data, wallets, credentials, and personal files stay separated from the rest of your desktop.
               </p>
 
               <div class="hero-actions">
@@ -689,8 +779,12 @@
           <div class="hero-media panel shot">
             <img
               src="demo.gif"
+              width="1165"
+              height="667"
               alt="RunFence main window with application list"
               loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
         </div>
@@ -703,7 +797,7 @@
               <h2 id="use-cases-title">Use cases that matter most</h2>
             </div>
             <p>
-              The first questions are usually about protecting a wallet, isolating a browser, or running Claude Code without giving it access to the rest of the machine.
+              The most common reasons are protecting wallets, isolating browser profiles, running Claude Code without giving it access to the rest of the machine.
             </p>
           </div>
 
@@ -719,7 +813,7 @@
             <article class="card">
              <h3>Elevated apps</h3>
              <p>Launch specific apps with administrator rights without repeated UAC prompts or typing credentials every time.</p>
-           </article>
+            </article>
             <article class="card">
               <h3>Untrusted software</h3>
               <p>Run unfamiliar apps under a restricted account that cannot reach your documents or personal credentials.</p>
@@ -991,8 +1085,8 @@
                 </svg>
               </div>
               <div>
-                <strong>What happens if I need to move files between accounts?</strong>
-                <span>Use a shared folder with explicit permissions or the built-in cross-user drag-and-drop bridge for ad-hoc transfers.</span>
+                <strong>Does RunFence work with games?</strong>
+                <span>It depends on the launcher and anti-cheat system. Some launchers need elevation to install games, and the game itself then runs under the isolated account. Steam is the only major launcher that can itself be installed without elevation.</span>
               </div>
             </div>
           </div>
