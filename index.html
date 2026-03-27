@@ -154,6 +154,7 @@
         gap: 12px;
         font-weight: 800;
         letter-spacing: -0.03em;
+        flex: 0 0 auto;
       }
 
       .brand-mark {
@@ -165,21 +166,134 @@
         background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(79, 70, 229, 0.16));
         border: 1px solid rgba(37, 99, 235, 0.14);
         box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+        font-size: 20px;
+        line-height: 1;
       }
-
-      .brand-mark svg { width: 22px; height: 22px; }
 
       .nav {
         display: flex;
+        align-items: center;
         gap: 18px;
         flex-wrap: wrap;
         justify-content: flex-end;
         color: var(--muted);
         font-size: 14px;
+        min-width: 0;
+      }
+
+      .nav-cluster {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        min-width: 0;
+      }
+
+      .nav-cluster + .nav-cluster {
+        padding-left: 18px;
+        margin-left: 2px;
+        border-left: 1px solid rgba(30, 41, 59, 0.10);
       }
 
       .nav a:hover,
-      .repo-link:hover { color: var(--text); }
+      .repo-link:hover,
+      .nav-dropdown summary:hover {
+        color: var(--text);
+      }
+
+      .nav-dropdown {
+        position: relative;
+      }
+
+      .nav-dropdown summary {
+        list-style: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+        padding: 0;
+        color: inherit;
+        font: inherit;
+        white-space: nowrap;
+      }
+
+      .nav-dropdown summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .nav-caret {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        transition: transform 160ms ease;
+        opacity: 0.8;
+      }
+
+      .nav-dropdown[open] .nav-caret {
+        transform: rotate(180deg);
+      }
+
+      .nav-panel {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 12px);
+        width: min(360px, calc(100vw - 24px));
+        padding: 12px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(30, 41, 59, 0.10);
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+      }
+
+      .nav-panel-list {
+        display: grid;
+        gap: 8px;
+        max-height: 320px;
+        overflow: auto;
+        padding-right: 2px;
+      }
+
+      .nav-panel-link {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 11px 12px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        background: rgba(245, 248, 255, 0.8);
+        transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+      }
+
+      .nav-panel-link:hover {
+        background: rgba(37, 99, 235, 0.06);
+        border-color: rgba(37, 99, 235, 0.12);
+        transform: translateY(-1px);
+      }
+
+      .nav-panel-link strong {
+        display: block;
+        font-size: 14px;
+        line-height: 1.3;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-panel-link span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+        margin-top: 3px;
+      }
+
+      .nav-panel-dot {
+        width: 9px;
+        height: 9px;
+        margin-top: 5px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        flex: 0 0 auto;
+      }
 
       .hero { padding: 46px 0 24px; }
 
@@ -677,12 +791,23 @@
         .hero-side .panel {
           height: auto;
         }
+
+        .nav-panel {
+          left: 0;
+          right: auto;
+        }
       }
 
       @media (max-width: 640px) {
         .shell { width: min(var(--max), calc(100% - 24px)); }
         .topbar-inner { padding: 12px 0; }
-        .nav { display: none; }
+        .nav {
+          gap: 12px;
+        }
+        .nav-cluster + .nav-cluster {
+          padding-left: 12px;
+          margin-left: 0;
+        }
         .hero { padding-top: 30px; }
         h1 { max-width: 12ch; }
         .card, .cta { padding: 18px; border-radius: 22px; }
@@ -701,21 +826,42 @@
   <body>
     <header class="topbar">
       <div class="shell topbar-inner">
-        <a class="brand" href="#top" aria-label="RunFence home">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 12.8V8.9C5 6.2 7.2 4 9.9 4h4.2C16.8 4 19 6.2 19 8.9v3.8c0 2.7-2.2 4.9-4.9 4.9H9.9C7.2 17.6 5 15.5 5 12.8Z" stroke="currentColor" stroke-width="1.6"/>
-              <path d="M8.1 13.1c1.1-.1 1.7-.7 2.1-1.6.4-.9.9-1.4 1.9-1.4 1.2 0 1.7.6 2.1 1.5.4.8 1 1.5 2.2 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M8.4 8.3h7.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </span>
+        <a class="brand" href="/" aria-label="RunFence home">
+          <span class="brand-mark" aria-hidden="true">🛡️</span>
           <span>RunFence</span>
         </a>
+
         <nav class="nav" aria-label="Primary">
-          <a href="#use-cases">Use cases</a>
-          <a href="#features">Features</a>
-          <a href="#comparison">Compare</a>
-          <a href="#faq">FAQ</a>
+          <div class="nav-cluster" aria-label="Sections">
+            <a href="#use-cases">Use cases</a>
+            <a href="#features">Features</a>
+            <a href="#comparison">Compare</a>
+            <a href="#faq">FAQ</a>
+          </div>
+
+          <div class="nav-cluster" aria-label="Learn">
+            <details class="nav-dropdown">
+              <summary>
+                <span>Learn</span>
+                <svg class="nav-caret" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+
+              <div class="nav-panel" role="menu" aria-label="Learn posts">
+                <div class="nav-panel-list">
+                  <a class="nav-panel-link" href="run-as-admin-without-password.html" role="menuitem">
+                    <span class="nav-panel-dot" aria-hidden="true"></span>
+                    <span>
+                      <strong>Run Program as Windows Administrator Without Password Securely</strong>
+                      <span>How to reduce elevation friction without weakening Windows security.</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </details>
+          </div>
+
           <a class="repo-link" href="https://github.com/runfence/RunFence" target="_blank" rel="noreferrer">GitHub ↗</a>
         </nav>
       </div>
