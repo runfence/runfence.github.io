@@ -1541,7 +1541,7 @@
       </footer>
     </main>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
       // ============ Close Learn dropdown on outside click ============
       (function () {
         const dropdowns = document.querySelectorAll(".nav-dropdown");
@@ -1575,118 +1575,6 @@
       });
 
       document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
-
-    <!-- ============ Tweaks panel ============ -->
-    <div id="tweaks-root"></div>
-    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-    <script type="text/babel" src="tweaks-panel.jsx"></script>
-    <script type="text/babel">
-      const RF_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-        "accent": "#2541ff",
-        "accent2": "#ff5b1f",
-        "headline": "sans",
-        "emphasis": "color",
-        "paper": "warm",
-        "density": "regular",
-        "showStrip": true,
-        "defaultScenario": "claude"
-      }/*EDITMODE-END*/;
-
-      function applyTweaks(t) {
-        const root = document.documentElement;
-        root.style.setProperty("--accent", t.accent);
-        root.style.setProperty("--accent-2", t.accent2);
-        document.body.dataset.headline = t.headline;
-        document.body.dataset.emphasis = t.emphasis;
-        document.body.dataset.paper = t.paper;
-        document.body.dataset.density = t.density;
-        document.body.dataset.strip = t.showStrip ? "on" : "off";
-      }
-
-      // Apply defaults immediately so first paint is correct.
-      applyTweaks(RF_TWEAK_DEFAULTS);
-
-      // Switch active scenario tab when default changes.
-      function setDefaultScenario(key) {
-        showScenario(key);
-      }
-
-      function App() {
-        const [t, setTweak] = useTweaks(RF_TWEAK_DEFAULTS);
-
-        React.useEffect(() => { applyTweaks(t); }, [
-          t.accent, t.accent2, t.headline, t.emphasis, t.paper, t.density, t.showStrip
-        ]);
-        React.useEffect(() => { setDefaultScenario(t.defaultScenario); }, [t.defaultScenario]);
-
-        return (
-          <TweaksPanel>
-            <TweakSection label="Type" />
-            <TweakRadio
-              label="Headline"
-              value={t.headline}
-              options={["sans", "serif"]}
-              onChange={(v) => setTweak("headline", v)}
-            />
-            <TweakRadio
-              label="Accent emphasis"
-              value={t.emphasis}
-              options={["color", "underline", "strike"]}
-              onChange={(v) => setTweak("emphasis", v)}
-            />
-
-            <TweakSection label="Color" />
-            <TweakColor
-              label="Accent (cobalt)"
-              value={t.accent}
-              onChange={(v) => setTweak("accent", v)}
-            />
-            <TweakColor
-              label="Accent (signal)"
-              value={t.accent2}
-              onChange={(v) => setTweak("accent2", v)}
-            />
-            <TweakRadio
-              label="Paper"
-              value={t.paper}
-              options={["warm", "white", "cool"]}
-              onChange={(v) => setTweak("paper", v)}
-            />
-
-            <TweakSection label="Layout" />
-            <TweakRadio
-              label="Density"
-              value={t.density}
-              options={["compact", "regular", "airy"]}
-              onChange={(v) => setTweak("density", v)}
-            />
-            <TweakToggle
-              label="Show stat strip"
-              value={t.showStrip}
-              onChange={(v) => setTweak("showStrip", v)}
-            />
-
-            <TweakSection label="Scenarios" />
-            <TweakSelect
-              label="Default tab"
-              value={t.defaultScenario}
-              options={[
-                { value: "claude",    label: "Claude Code" },
-                { value: "wallet",    label: "Crypto wallet" },
-                { value: "browser",   label: "Browser profile" },
-                { value: "elevated",  label: "Elevated apps" },
-                { value: "untrusted", label: "Untrusted software" },
-              ]}
-              onChange={(v) => setTweak("defaultScenario", v)}
-            />
-          </TweaksPanel>
-        );
-      }
-
-      ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<App />);
     </script>
   </body>
 </html>
