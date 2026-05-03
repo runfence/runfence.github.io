@@ -824,6 +824,31 @@
         h1.display { font-size: clamp(40px, 11vw, 64px); }
         details.faq summary { padding: 18px 18px; font-size: 15.5px; }
       }
+      @media (max-width: 480px) {
+        .problem-grid {
+          margin-inline: -14px;
+        }
+        .problem-card {
+          padding-inline: 8px;
+        }
+        .problem-card > .problem-tag,
+        .problem-card > h3,
+        .problem-card > p {
+          margin-left: 20px;
+          margin-right: 20px;
+        }
+        .problem-card .diagram-apps,
+        .problem-card .diagram-files {
+          gap: 6px;
+        }
+        .problem-card .app,
+        .problem-card .file {
+          gap: 5px;
+          padding-left: 2px;
+          padding-right: 6px;
+          font-size: 11px;
+        }
+      }
 
       /* ============ Tweak hooks ============ */
       body[data-headline="serif"] h1.display { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.025em; }
