@@ -2,31 +2,39 @@
    shared.css — chrome shared between index.html and article pages
    Loaded BEFORE each page's inline <style> so per-page tokens
    and overrides cascade naturally.
-   Fonts (Geist + JetBrains Mono + Instrument Serif) are loaded
-   by each page in <head> via <link> tags.
+   Tokens align with the Win11 Fluent light theme used by the
+   RunFence app itself: white paper, Win11 accent blue (#0067c0),
+   Inter for UI text, Cascadia Code for monospace.
    ============================================================ */
 
 :root {
-  --ink: #1c223a;
-  --ink-deep: #11162b;
-  --ink-2: #2a3354;
-  --paper: #f6f5f0;
-  --paper-2: #efece4;
-  --line: #1a2238;
-  --line-soft: rgba(26, 34, 56, 0.12);
-  --muted: #545d75;
-  --muted-2: #7a8299;
-  --accent: #2541ff;
-  --accent-deep: #1a30d6;
-  --good: #0f5c3a;
-  --bad: #b3261e;
-  --mid: #8a4b00;
-  --shadow: 0 24px 60px -24px rgba(11, 16, 32, 0.30);
-  --shadow-sm: 0 6px 18px -8px rgba(11, 16, 32, 0.20);
+  --ink: #1a1a1a;
+  --ink-deep: #0d0d0d;
+  --ink-2: #2b2b2b;
+  --paper: #ffffff;
+  --paper-2: #fafafa;
+  --paper-3: #f5f5f5;
+  --bg: #f3f3f3;
+  --line: #e5e5e5;
+  --line-2: #d6d6d6;
+  --line-soft: #ebebeb;
+  --muted: #5c5c5c;
+  --muted-2: #8a8a8a;
+  --accent: #0067c0;
+  --accent-deep: #005a9e;
+  --accent-bg: #ebf3fb;
+  --good: #107c41;
+  --good-bg: #ecf6ee;
+  --bad: #c42b1c;
+  --warn: #c45500;
+  --warn-bg: #fff4e6;
+  --mid: #c45500;
+  --shadow: 0 30px 80px -30px rgba(0,0,0,0.22), 0 8px 20px -8px rgba(0,0,0,0.12);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06), 0 1px 1px rgba(0,0,0,0.04);
   --max: 1240px;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --serif: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --mono: "Cascadia Code", ui-monospace, Consolas, "Segoe UI Mono", SFMono-Regular, Menlo, monospace;
+  --sans: "Inter", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --serif: "Inter", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -48,9 +56,9 @@ code, kbd {
   font-family: var(--mono);
   font-size: 0.9em;
   padding: 0.1rem 0.36rem;
-  background: rgba(11, 16, 32, 0.06);
+  background: var(--paper-3);
   border-radius: 6px;
-  border: 1px solid rgba(11, 16, 32, 0.08);
+  border: 1px solid var(--line);
   white-space: nowrap;
 }
 
@@ -59,9 +67,9 @@ code, kbd {
 /* ============ Top bar ============ */
 .topbar {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(246, 245, 240, 0.85);
+  background: rgba(243, 243, 243, 0.85);
   backdrop-filter: saturate(140%) blur(14px);
-  border-bottom: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line);
 }
 .topbar-inner {
   display: flex; align-items: center; justify-content: space-between;
@@ -72,10 +80,11 @@ code, kbd {
   font-weight: 700; letter-spacing: -0.02em; font-size: 18px;
 }
 .brand-mark {
-  width: 32px; height: 32px; border-radius: 8px;
+  width: 32px; height: 32px; border-radius: 6px;
   display: grid; place-items: center;
   background: var(--accent);
   color: white;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.18);
 }
 .brand-mark svg { width: 22px; height: 22px; }
 
@@ -102,8 +111,8 @@ code, kbd {
   width: min(380px, calc(100vw - 24px));
   padding: 8px;
   background: var(--paper);
-  border: 1px solid var(--line-soft);
-  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
   box-shadow: var(--shadow);
 }
 .nav-panel-link {
@@ -120,25 +129,26 @@ code, kbd {
 }
 /* current page state inside the dropdown */
 .nav-panel-link[aria-current="page"] {
-  background: rgba(37, 65, 255, 0.08);
-  outline: 1px solid rgba(37, 65, 255, 0.20);
+  background: var(--accent-bg);
+  outline: 1px solid rgba(0, 103, 192, 0.22);
 }
 .nav-panel-link[aria-current="page"] strong { color: var(--accent); }
 .nav-panel-link[aria-current="page"] .nav-panel-dot {
-  box-shadow: 0 0 0 4px rgba(37, 65, 255, 0.16);
+  box-shadow: 0 0 0 4px rgba(0, 103, 192, 0.18);
 }
 
 .nav-cta {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 14px; border-radius: 999px;
+  padding: 9px 14px; border-radius: 6px;
   background: var(--accent); color: white !important;
   font-weight: 600; font-size: 14px;
+  box-shadow: var(--shadow-sm);
   transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
 }
 .nav-cta:hover {
   transform: translateY(-1px);
   background: var(--accent-deep);
-  box-shadow: 0 10px 24px -10px rgba(37,65,255,.55);
+  box-shadow: 0 10px 24px -10px rgba(0,103,192,.45);
 }
 .nav-cta, .nav-cta:visited, .nav-cta:active, .nav-cta:focus { color: white !important; }
 
@@ -148,7 +158,7 @@ code, kbd {
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 16px;
   padding-top: 22px;
-  border-top: 1px solid var(--line-soft);
+  border-top: 1px solid var(--line);
 }
 .footer-copy { font-family: var(--mono); font-size: 12px; color: var(--muted-2); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 22px; font-size: 14px; }
